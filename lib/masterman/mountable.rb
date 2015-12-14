@@ -1,10 +1,24 @@
 module Masterman
   module Mountable
+    extend ActiveSupport::Concern
+
     class MastermanError < StandardError; end
     class RecordNotFound < MastermanError; end
 
     module Attributes
-      extend Extendable
+      extend ActiveSupport::Concern
+
+      included do
+        cattr_accessor :attribute_methods
+        self.attribute_methods = []
+      end
+
+      class_methods do
+        def attribute_accessor(*attrs)
+          self.attribute_methods += attrs
+          attr_accessor(*attrs)
+        end
+      end
 
       def attributes
         self.class.attribute_methods.each_with_object({}) do |attr, memo|
@@ -26,61 +40,63 @@ module Masterman
       def []=(key, value)
         public_send("#{key}=", value)
       end
-
-      module ClassMethods
-        def attribute_methods
-          @attribute_methods || []
-        end
-
-        def attribute_accessor(*attrs)
-          @attribute_methods ||= []
-          @attribute_methods += attrs
-          attr_accessor(*attrs)
-        end
-      end
     end
 
     module Collection
-      extend Extendable
+      extend ActiveSupport::Concern
 
-      module ClassMethods
-        def self.extended(klass)
-          super
+      included do
+        include Enumerable
 
-          klass.class_eval do
-            include Enumerable
+        class << self
+          extend Forwardable
 
-            class << self
-              extend Forwardable
+          delegate [:each] => :to_a
 
-              delegate [:each] => :to_a
+          delegate %i(
+            delete_at select! delete_if compact! map! uniq! reverse! reject!
+            flatten! sort! sort_by! collect! shuffle! keep_if rotate! slice
+          ) => :spawn
 
-              delegate %i(
-                delete_at select! delete_if compact! map! uniq! reverse! reject!
-                flatten! sort! sort_by! collect! shuffle! keep_if rotate! slice
-              ) => :spawn
-
-              delegate %i(
-                combination fill index rassoc reverse_each uniq
-                any? compact find_index insert pack reject rindex shuffle take
-                assoc first inspect permutation rotate take_while unshift
-                at concat each flatten join pop repeated_combination size values_at
-                bsearch count each_index sample to_ary zip
-                clear cycle empty? frozen? last pretty_print_cycle replace select slice! to_h
-                == collect delete eql? hash length product reverse sort to_s
-                fetch include? map push transpose
-              ) => :to_a
-            end
-          end
+          delegate %i(
+            combination fill index rassoc reverse_each uniq
+            any? compact find_index insert pack reject rindex shuffle take
+            assoc first inspect permutation rotate take_while unshift
+            at concat each flatten join pop repeated_combination size values_at
+            bsearch count each_index sample to_ary zip
+            clear cycle empty? frozen? last pretty_print_cycle replace select slice! to_h
+            == collect delete eql? hash length product reverse sort to_s
+            fetch include? map push transpose
+          ) => :to_a
         end
+      end
 
+      class_methods do
         def find(id)
           optimized_array[id] || raise(RecordNotFound.new('missing record'))
         end
       end
     end
 
-    module ClassMethods
+    module Association
+      class_methods do
+        def belongs_to(key)
+        end
+
+        def has_many(klass)
+        end
+
+        def has_one(klass)
+        end
+      end
+    end
+
+    included do
+      include Attributes
+      include Collection
+    end
+
+    class_methods do
       def mount_data(options)
         @_mount_options = options
       end
@@ -117,14 +133,6 @@ module Masterman
           memo[record[primary_key]] = record
         end
       end
-    end
-
-    extend Extendable
-
-    def self.included(klass)
-      super
-      klass.include(Attributes)
-      klass.include(Collection)
     end
   end
 end

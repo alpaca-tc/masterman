@@ -1,5 +1,5 @@
+require 'active_support/concern'
 require 'masterman/version'
-require 'masterman/extendable'
 require 'masterman/mountable'
 require 'masterman/loader'
 
