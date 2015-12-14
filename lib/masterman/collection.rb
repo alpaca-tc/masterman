@@ -32,6 +32,17 @@ module Masterman
       def find(id)
         load_records[id] || raise(RecordNotFound.new('missing record'))
       end
+
+      def spawn
+        to_a.dup
+      end
+
+      def to_records(records)
+        records.each_with_object({}) do |attributes, memo|
+          record = new(attributes)
+          memo[record[primary_key]] = record
+        end
+      end
     end
   end
 end

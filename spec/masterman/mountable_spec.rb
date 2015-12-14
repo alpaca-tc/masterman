@@ -33,5 +33,25 @@ RSpec.describe Masterman::Mountable do
         end
       end
     end
+
+    describe '.mount_data' do
+      describe 'directly' do
+        let(:mounted) do
+          Class.new do
+            include ActiveModel::Model
+            include Masterman::Attributes
+            include Masterman::Collection
+            include Masterman::Mountable
+
+            mount_data direct: [{ id: 1 }]
+            attribute_accessor :id
+          end
+        end
+
+        it 'mount data directly' do
+          expect(mounted.first).to be_present
+        end
+      end
+    end
   end
 end
