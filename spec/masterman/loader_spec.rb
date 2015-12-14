@@ -34,7 +34,7 @@ RSpec.describe Masterman::Loader do
       it_behaves_like 'a loader'
     end
 
-    fcontext 'given :csv' do
+    context 'given :csv' do
       let(:name) { :csv }
       let(:path) { File.expand_path('../../fixtures/masterdata.csv', __FILE__) }
       it { is_expected.to eq(described_class::Csv) }

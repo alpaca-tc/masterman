@@ -1,16 +1,6 @@
 require 'masterman_spec'
 
 RSpec.describe Masterman::Mountable do
-  def mount_class(&block)
-    Class.new do
-      include ActiveModel::Model
-      include Masterman::Core
-      mount_data from: File.expand_path('../../fixtures/masterdata.yml', __FILE__), loader: :yaml
-      attribute_accessor :id, :name
-      self.class_eval(&block) if block_given?
-    end
-  end
-
   describe 'ClassMethods' do
     describe '.primary_id=' do
       let(:mounted) do
@@ -21,18 +11,6 @@ RSpec.describe Masterman::Mountable do
 
       it 'set primary_id' do
         expect(mounted.primary_key).to eq(:custom_id)
-      end
-    end
-
-    describe '.attribute_accessor' do
-      let(:mounted) do
-        mount_class do
-          attribute_accessor :name
-        end
-      end
-
-      it 'defines accessor' do
-        expect(mounted.first.name).to be_a(String)
       end
     end
 
@@ -55,8 +33,5 @@ RSpec.describe Masterman::Mountable do
         end
       end
     end
-  end
-
-  describe 'InstanceMethods' do
   end
 end
