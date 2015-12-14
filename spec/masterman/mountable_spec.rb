@@ -4,7 +4,7 @@ RSpec.describe Masterman::Mountable do
   def mount_class(&block)
     Class.new do
       include ActiveModel::Model
-      include Masterman::Mountable
+      include Masterman::Core
       mount_data from: File.expand_path('../../fixtures/masterdata.yml', __FILE__), loader: :yaml
       attribute_accessor :id, :name
       self.class_eval(&block) if block_given?
@@ -51,7 +51,7 @@ RSpec.describe Masterman::Mountable do
         let(:id) { 10 }
 
         it 'raise not found error' do
-          expect { subject }.to raise_error(described_class::RecordNotFound)
+          expect { subject }.to raise_error(Masterman::RecordNotFound)
         end
       end
     end
