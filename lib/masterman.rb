@@ -1,5 +1,7 @@
-require "masterman/version"
+require 'masterman/version'
+require 'masterman/extendable'
+require 'masterman/mountable'
+require 'masterman/loader'
 
 module Masterman
-  # Your code goes here...
 end

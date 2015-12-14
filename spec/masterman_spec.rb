@@ -1,11 +1,7 @@
 require 'spec_helper'
 
-describe Masterman do
+RSpec.describe Masterman do
   it 'has a version number' do
     expect(Masterman::VERSION).not_to be nil
-  end
-
-  it 'does something useful' do
-    expect(false).to eq(true)
   end
 end
