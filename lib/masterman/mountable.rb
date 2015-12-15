@@ -2,17 +2,13 @@ module Masterman
   module Mountable
     extend ActiveSupport::Concern
 
+    included do
+      cattr_accessor :primary_key, :_mount_options
+      self.primary_key = :id
+      self._mount_options = {}
+    end
+
     class_methods do
-      def inherited(klass)
-        klass.class_eval do
-          cattr_accessor :primary_key, :_mount_options
-          self.primary_key = :id
-          self._mount_options = {}
-        end
-
-        super
-      end
-
       def mount_data(options)
         self._mount_options = options
       end

@@ -17,7 +17,7 @@ module Masterman
     def initialize(attributes = {})
       super(attributes)
 
-      unless self.attribute_methods_generated
+      unless @attribute_methods_generated
         initialize_generated_modules
         define_reflections
         @attribute_methods_generated = true
@@ -29,15 +29,13 @@ module Masterman
     def initialize_generated_modules
       self.generated_attribute_methods = GeneratedAttributeMethods.new
       @attribute_methods_generated = false
-      self.class.include @generated_attribute_methods
+      self.class.include(generated_attribute_methods)
     end
 
     def define_reflections
-      self.class._reflections.each do |name, reflection|
+      self.class._reflections.each do |name, _|
         self.generated_attribute_methods.module_eval do
-          define_method name do
-            binding.pry;
-          end
+          define_method(name) { association(name).reader }
         end
       end
     end
