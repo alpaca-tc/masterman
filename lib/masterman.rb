@@ -22,7 +22,7 @@ module Masterman
 
   class_methods do
     def configure_masterman(&block)
-      block.call(self.masterman)
+      masterman.instance_exec(&block)
     end
   end
 end

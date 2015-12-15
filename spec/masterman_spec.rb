@@ -17,7 +17,7 @@ RSpec.describe Masterman do
     end
 
     it 'defines .configure_masterman' do
-      masterman = included.configure_masterman { |masterman| masterman }
+      masterman = included.configure_masterman { self }
       expect(masterman).to be_a(Masterman::Base)
     end
   end

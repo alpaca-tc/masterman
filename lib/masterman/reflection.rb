@@ -22,7 +22,7 @@ module Masterman
       end
 
       def foreign_key
-        options.fetch(:foregin_key, "#{name.to_s}_id")
+        (options[:foreign_key] || "#{name.to_s}_id").to_s
       end
 
       def macro
