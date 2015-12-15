@@ -12,12 +12,18 @@ module Masterman
       when :belongs_to
         reflection.klass.find(model[reflection.foreign_key])
       when :has_many
-        target = reflection.klass._reflections[model.name]
-        target.model_class.select { |record| record[target.foreign_key] == model[model.class.primary_key] }
+        model_class = collection_target.model_class.model_class
+        model_class.select { |record| record[collection_target.foreign_key] == model[model.class.masterman.primary_key] }
       when :has_one
-        target = reflection.klass._reflections[model.name]
-        target.model_class.find(model[model.class.primary_key])
+        model_class = collection_target.model_class.model_class
+        model_class.find(model[model.class.masterman.primary_key])
       end
+    end
+
+    private
+
+    def collection_target
+      reflection.klass.masterman._reflections[model.name]
     end
   end
 end

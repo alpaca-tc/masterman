@@ -7,8 +7,8 @@ module Masterman
       self._reflections = {}
     end
 
-    def self.add_reflection(model, name, reflection)
-      model._reflections = model._reflections.merge(name.to_s => reflection)
+    def self.add_reflection(masterman, name, reflection)
+      masterman._reflections = masterman._reflections.merge(name.to_s => reflection)
     end
 
     class Macro

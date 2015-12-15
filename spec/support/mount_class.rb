@@ -4,9 +4,10 @@ module RSpecSupport
       Class.new do
         include Masterman
 
-        define_masterman do
+        configure_masterman do
           mount_data file: File.expand_path('../../fixtures/masterdata.yml', __FILE__), loader: :yaml
           attribute_accessor :id, :name
+          instance_eval(&block) if block_given?
         end
       end
     end

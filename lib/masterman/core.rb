@@ -33,9 +33,9 @@ module Masterman
     end
 
     def define_reflections
-      self.class._reflections.each do |name, _|
+      self.class.masterman._reflections.each do |name, _|
         self.generated_attribute_methods.module_eval do
-          define_method(name) { association(name).reader }
+          define_method(name) { masterman.association(name, self).reader }
         end
       end
     end

@@ -1,4 +1,4 @@
-require 'masterman_spec'
+require 'spec_helper'
 
 RSpec.describe Masterman::Reflection do
   let(:included) do

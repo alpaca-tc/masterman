@@ -1,20 +1,25 @@
-require 'masterman_spec'
+require 'spec_helper'
 
-RSpec.describe Masterman::Attributes do
+RSpec.describe Masterman::Associations do
   describe '.belongs_to' do
     before do
       class User
-        include Masterman::Base
-        mount_data direct: [{ id: 1, name: 'user' }]
-        attribute_accessor :id, :name
+        include Masterman
+
+        configure_masterman do
+          mount_data direct: [{ id: 1, name: 'user' }]
+          attribute_accessor :id, :name
+        end
       end
 
       class Item
-        include Masterman::Base
-        mount_data direct: [{ id: 1, name: 'item', user_id: 1 }]
-        attribute_accessor :id, :name, :user_id
+        include Masterman
 
-        belongs_to :user
+        configure_masterman do
+          mount_data direct: [{ id: 1, name: 'item', user_id: 1 }]
+          attribute_accessor :id, :name, :user_id
+          belongs_to :user
+        end
       end
     end
 
@@ -32,19 +37,23 @@ RSpec.describe Masterman::Attributes do
   describe '.has_many' do
     before do
       class User
-        include Masterman::Base
-        mount_data direct: [{ id: 1, name: 'user' }]
-        attribute_accessor :id, :name
+        include Masterman
 
-        has_many :items
+        configure_masterman do
+          mount_data direct: [{ id: 1, name: 'user' }]
+          attribute_accessor :id, :name
+          has_many :items
+        end
       end
 
       class Item
-        include Masterman::Base
-        mount_data direct: [{ id: 1, name: 'item', user_id: 1 }]
-        attribute_accessor :id, :name, :user_id
+        include Masterman
 
-        belongs_to :user
+        configure_masterman do
+          mount_data direct: [{ id: 1, name: 'item', user_id: 1 }]
+          attribute_accessor :id, :name, :user_id
+          belongs_to :user
+        end
       end
     end
 
@@ -61,19 +70,23 @@ RSpec.describe Masterman::Attributes do
   describe '.has_one' do
     before do
       class User
-        include Masterman::Base
-        mount_data direct: [{ id: 1, name: 'user' }]
-        attribute_accessor :id, :name
+        include Masterman
 
-        has_one :item
+        configure_masterman do
+          mount_data direct: [{ id: 1, name: 'user' }]
+          attribute_accessor :id, :name
+          has_one :item
+        end
       end
 
       class Item
-        include Masterman::Base
-        mount_data direct: [{ id: 1, name: 'item', user_id: 1 }]
-        attribute_accessor :id, :name, :user_id
+        include Masterman
 
-        belongs_to :user
+        configure_masterman do
+          mount_data direct: [{ id: 1, name: 'item', user_id: 1 }]
+          attribute_accessor :id, :name, :user_id
+          belongs_to :user
+        end
       end
     end
 
