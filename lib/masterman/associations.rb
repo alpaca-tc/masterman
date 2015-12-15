@@ -38,13 +38,15 @@ module Masterman
     private
 
     def association_instance_get(name)
-      @association_instance_cache ||= {}
-      @association_instance_cache[name]
+      association_instance_cache[name]
     end
 
     def association_instance_set(name, value)
+      association_instance_cache[name] = value
+    end
+
+    def association_instance_cache
       @association_instance_cache ||= {}
-      @association_instance_cache[name] = value
     end
   end
 end

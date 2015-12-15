@@ -33,7 +33,13 @@ module Masterman
       end
 
       def compute_class(name)
-        name.constantize
+        class_name = name.to_s
+        class_name = class_name.singularize if collection?
+        class_name.camelize.constantize
+      end
+
+      def collection?
+        macro == :has_many
       end
     end
   end
