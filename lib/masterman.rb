@@ -12,4 +12,17 @@ require 'masterman/base'
 module Masterman
   class MastermanError < StandardError; end
   class RecordNotFound < MastermanError; end
+
+  extend ActiveSupport::Concern
+
+  included do
+    cattr_accessor :masterman
+    self.masterman = Masterman::Base.new(self)
+  end
+
+  class_methods do
+    def configure_masterman(&block)
+      block.call(self.masterman)
+    end
+  end
 end
