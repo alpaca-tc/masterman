@@ -9,10 +9,7 @@ module Masterman
     extend ActiveSupport::Concern
 
     included do
-      include Attributes
-      include Collection
-      include Reflection
-      include Mountable
+      cattr_accessor :generated_attribute_methods
     end
 
     class GeneratedAttributeMethods < Module; end
@@ -20,7 +17,7 @@ module Masterman
     def initialize(attributes = {})
       super(attributes)
 
-      unless @attribute_methods_generated
+      unless self.attribute_methods_generated
         initialize_generated_modules
         define_reflections
         @attribute_methods_generated = true
@@ -30,14 +27,14 @@ module Masterman
     private
 
     def initialize_generated_modules
-      @generated_attribute_methods = GeneratedAttributeMethods.new
+      self.generated_attribute_methods = GeneratedAttributeMethods.new
       @attribute_methods_generated = false
       self.class.include @generated_attribute_methods
     end
 
     def define_reflections
       self.class._reflections.each do |name, reflection|
-        @generated_attribute_methods.module_eval do
+        self.generated_attribute_methods.module_eval do
           define_method name do
             binding.pry;
           end

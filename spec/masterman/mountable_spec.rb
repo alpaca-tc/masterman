@@ -37,12 +37,7 @@ RSpec.describe Masterman::Mountable do
     describe '.mount_data' do
       describe 'directly' do
         let(:mounted) do
-          Class.new do
-            include ActiveModel::Model
-            include Masterman::Attributes
-            include Masterman::Collection
-            include Masterman::Mountable
-
+          mount_class do
             mount_data direct: [{ id: 1 }]
             attribute_accessor :id
           end
