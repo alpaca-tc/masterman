@@ -1,22 +1,22 @@
 module Masterman
   module Associations
     def belongs_to(name, scope = nil, options = {})
-      build_reflection_and_add(name, scope, options, :belongs_to)
+      build_reflection_and_add(:belongs_to, name, scope, options)
     end
 
     def has_many(name, scope = nil, options = {})
-      build_reflection_and_add(name, scope, options, :has_many)
+      build_reflection_and_add(:has_many, name, scope, options)
     end
 
     def has_one(name, scope = nil, options = {})
-      build_reflection_and_add(name, scope, options, :has_one)
+      build_reflection_and_add(:has_one, name, scope, options)
     end
 
     def association(name, instance)
       association = association_instance_get(name)
 
       if association.nil?
-        reflection = self.class._reflections[name]
+        reflection = self._reflections[name]
         association = reflection.build_association(instance, reflection)
         association_instance_set(name, association)
       end
@@ -26,8 +26,13 @@ module Masterman
 
     private
 
-    def build_reflection_and_add(name, scope, options, macro)
-      reflection = Reflection::Macro.new(name, scope, options.merge(macro: macro), self)
+    def build_reflection_and_add(macro, name, scope, options)
+      if scope.is_a?(Hash)
+        options = scope
+        scope = nil
+      end
+
+      reflection = Reflection.build(macro, name, scope, options, self)
       Reflection.add_reflection self, name, reflection
     end
 

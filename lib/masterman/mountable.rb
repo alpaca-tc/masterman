@@ -25,8 +25,7 @@ module Masterman
                    elsif _mount_options[:direct]
                      to_records(_mount_options[:direct])
                    else
-                     {}
-                     # raise ArgumentError, ".mount_data is not defined. (#{_mount_options})"
+                     nil
                    end
     end
 

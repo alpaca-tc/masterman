@@ -22,12 +22,13 @@ module Masterman
     include AttributeMethods
     include Collection
     include Core
-
-    cattr_accessor :masterman
-    self.masterman = Masterman::Base.new(self)
   end
 
   class_methods do
+    def masterman
+      @masterman ||= Masterman::Base.new(self)
+    end
+
     def configure_masterman(&block)
       masterman.instance_exec(&block)
     end
