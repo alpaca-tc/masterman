@@ -14,12 +14,9 @@ module Masterman
       @_mount_options = options
     end
 
-    def _mount_options
-      @_mount_options || {}
-    end
-
     # DO NOT LOAD LARGE FILE
     def load_records
+      # XXX: Should I remove cache from memory?
       @records ||= if _mount_options[:file]
                      load_file(_mount_options[:file], _mount_options[:loader])
                    elsif _mount_options[:direct]
@@ -30,6 +27,10 @@ module Masterman
     end
 
     private
+
+    def _mount_options
+      @_mount_options || {}
+    end
 
     def load_file(fname, loader_name)
       loader = Loader.for(loader_name)

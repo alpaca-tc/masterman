@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Masterman::Mountable do
   describe 'ClassMethods' do
-    describe '.primary_id=' do
+    describe '#primary_id=' do
       let(:mounted) do
         mount_class do
           self.primary_key = :custom_id
@@ -15,17 +15,21 @@ RSpec.describe Masterman::Mountable do
       end
     end
 
-    describe '.mount_data' do
+    describe '#mount_data' do
       describe 'directly' do
         let(:mounted) do
+          _records = records
+
           mount_class do
-            mount_data direct: [{ id: 1 }]
+            mount_data(direct: _records)
             attribute_accessor :id
           end
         end
 
+        let(:records) { [{ id: 1 }] }
+
         it 'mount data directly' do
-          expect(mounted.first).to be_present
+          expect(mounted.masterman.load_records).to be_present
         end
       end
     end

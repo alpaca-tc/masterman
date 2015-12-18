@@ -22,14 +22,14 @@ module Masterman
     private
 
     def initialize_generated_modules
-      self.generated_attribute_methods = GeneratedAttributeMethods.new
+      self.class.generated_attribute_methods = GeneratedAttributeMethods.new
       self.class.include(generated_attribute_methods)
       define_reflections
     end
 
     def define_reflections
       self.class.masterman._reflections.each do |name, _|
-        self.generated_attribute_methods.module_eval do
+        self.class.generated_attribute_methods.module_eval do
           define_method(name) { self.class.masterman.association(name, self).reader }
         end
       end
