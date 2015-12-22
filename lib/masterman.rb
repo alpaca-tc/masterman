@@ -2,6 +2,7 @@ require 'active_support/concern'
 require 'active_support/inflector'
 require 'active_support/core_ext/module/attribute_accessors'
 require 'active_support/core_ext/class/attribute'
+require 'active_support/core_ext/array/wrap'
 
 require 'masterman/version'
 require 'masterman/core'

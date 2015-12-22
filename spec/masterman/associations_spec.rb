@@ -11,6 +11,7 @@ RSpec.describe Masterman::Associations do
         has_one :user_secret
         has_many :items
         has_many :variations, through: :items
+        has_many :id_eq_1_variations, -> { id == 1 }, through: :items, source: :variations
         has_many :attachments, through: :variations
       end
     end
@@ -88,6 +89,12 @@ RSpec.describe Masterman::Associations do
     it 'have_many through association' do
       expect(User.first.variations).to eq([Variation.first])
       expect(User.first.attachments).to eq([Attachment.first])
+    end
+  end
+
+  describe '.has_many with scope' do
+    it 'have_many through association' do
+      expect(User.first.id_eq_1_variations).to eq([Variation.first])
     end
   end
 

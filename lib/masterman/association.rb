@@ -11,7 +11,9 @@ module Masterman
       result = read_reflection
 
       if result && reflection.scope
-        binding.pry;
+        Array.wrap(result).select do |record|
+          record.instance_exec(&reflection.scope)
+        end
       else
         result
       end

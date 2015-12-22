@@ -43,7 +43,7 @@ module Masterman
       end
 
       def compute_class(name)
-        class_name = name.to_s
+        class_name = options.fetch(:source, name).to_s
         class_name = class_name.singularize if collection?
         class_name.camelize.constantize
       end
