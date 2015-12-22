@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Masterman::Attributes do
   describe '.attribute_accessor' do
-    let(:mounted) do
+    let(:klass) do
       Class.new do
         include Masterman
         masterman.attribute_accessor :id, :name
@@ -11,7 +11,7 @@ RSpec.describe Masterman::Attributes do
     end
 
     it 'defines accessor' do
-      records = mounted.masterman.all.values
+      records = klass.masterman.all.values
       expect(records.first.name).to eq('name')
     end
   end

@@ -28,9 +28,17 @@ module Masterman
       end
     end
 
-    class_methods do
+    module ClassMethods
       def find(id)
-        masterman.load_records[id] || raise(RecordNotFound.new('missing record'))
+        masterman.all[id] || raise(RecordNotFound.new('missing record'))
+      end
+
+      def find_by(attributes)
+        masterman.all.values.find do |record|
+          attributes.all? do |key, value|
+            record[key] == value
+          end
+        end
       end
 
       def spawn
@@ -38,7 +46,7 @@ module Masterman
       end
 
       def to_a
-        masterman.load_records.values
+        masterman.all.values
       end
     end
   end

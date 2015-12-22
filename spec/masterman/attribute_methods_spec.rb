@@ -31,4 +31,22 @@ RSpec.describe Masterman::AttributeMethods do
       is_expected.to eq(attributes['id'])
     end
   end
+
+  describe '#==' do
+    context 'given same object' do
+      subject { instance == instance }
+
+      it 'compares attributes and id' do
+        is_expected.to be true
+      end
+    end
+
+    context 'given new object' do
+      subject { instance == klass.new }
+
+      it 'compares attributes and id' do
+        is_expected.to be false
+      end
+    end
+  end
 end

@@ -32,6 +32,10 @@ module Masterman
         end
       end
 
+      def collection?
+        raise NotImplementedError, 'collection? is not defined'
+      end
+
       private
 
       def class_name
@@ -43,15 +47,9 @@ module Masterman
         class_name = class_name.singularize if collection?
         class_name.camelize.constantize
       end
-
-      def collection?
-        raise NotImplementedError, 'collection? is not defined'
-      end
     end
 
     class SinglurReflection < Macro
-      private
-
       def collection?
         false
       end
@@ -74,8 +72,6 @@ module Masterman
         :has_many
       end
 
-      private
-
       def collection?
         true
       end
@@ -85,9 +81,12 @@ module Masterman
       extend Forwardable
 
       delegate %i(
+        model_class collection?
         collection macro options scope klass foreign_key
         through_reflection build_association
       ) => :@delegate_reflection
+
+      attr_reader :delegate_reflection
 
       def initialize(delegate_reflection)
         @delegate_reflection = delegate_reflection

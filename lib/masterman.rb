@@ -20,16 +20,23 @@ module Masterman
 
   included do
     include Core
+    include Collection
     include AttributeMethods
   end
 
   class_methods do
-    def masterman
-      @masterman ||= Masterman::Base.new(self)
+    def masterman(&block)
+      if block_given?
+        _masterman.instance_exec(&block)
+      else
+        _masterman
+      end
     end
 
-    def configure_masterman(&block)
-      masterman.instance_exec(&block)
+    private
+
+    def _masterman
+      @masterman ||= Masterman::Base.new(self)
     end
   end
 end

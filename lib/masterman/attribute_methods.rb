@@ -20,5 +20,11 @@ module Masterman
     def []=(key, value)
       public_send("#{key}=", value)
     end
+
+    def ==(other)
+      other.is_a?(self.class) &&
+        !other[self.class.masterman.primary_key].nil? &&
+        other.attributes == attributes
+    end
   end
 end
