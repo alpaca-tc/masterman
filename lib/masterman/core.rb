@@ -18,8 +18,13 @@ module Masterman
     end
 
     def initialize(attributes = {})
-      super unless method(__method__).super_method.arity.zero?
       initialize_generated_modules unless self.class.generated_attribute_methods
+
+      attributes.each do |key, value|
+        instance_variable_set(:"@#{key}", value)
+      end
+
+      super unless method(__method__).super_method.arity.zero?
     end
 
     private
@@ -27,16 +32,25 @@ module Masterman
     def initialize_generated_modules
       self.class.generated_attribute_methods = GeneratedAttributeMethods.new
       self.class.include(generated_attribute_methods)
+      define_attributes
       define_reflections
     end
 
     def define_reflections
       masterman.reflections.each do |name, _|
-        self.class.generated_attribute_methods.module_eval do
+        generated_attribute_methods.module_eval do
           define_method(name) do
             self.class.masterman.association(name, self).reader
           end
         end
+      end
+    end
+
+    def define_attributes
+      attribute_methods = masterman.attribute_methods
+
+      generated_attribute_methods.module_eval do
+        attr_accessor *attribute_methods
       end
     end
 

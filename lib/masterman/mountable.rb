@@ -1,43 +1,42 @@
 module Masterman
   module Mountable
-    extend ActiveSupport::Concern
+    attr_accessor :primary_key, :mount_options
 
     def primary_key
       @primary_key || :id
     end
 
-    def primary_key=(val)
-      @primary_key = val
-    end
-
-    def mount_data(options)
-      @_mount_options = options
-    end
-
-    # DO NOT LOAD LARGE FILE
-    def load_records
-      # XXX: Should I remove cache from memory?
-      @records ||= if _mount_options[:file]
-                     load_file(_mount_options[:file], _mount_options[:loader])
-                   elsif _mount_options[:direct]
-                     to_records(_mount_options[:direct])
-                   else
-                     nil
-                   end
+    def all
+      to_instances(load_records)
     end
 
     private
 
-    def _mount_options
-      @_mount_options || {}
+    def load_records
+      if !mount_options
+        raise MastermanError, 'not defined .mount with options. Please call .mount on this class'
+      elsif mount_options[:file]
+        load_file(mount_options[:file], mount_options[:loader])
+      elsif mount_options[:direct]
+        load_direct(mount_options[:direct])
+      else
+        nil
+      end
     end
 
     def load_file(fname, loader_name)
-      loader = Loader.for(loader_name)
-      to_records(loader.read(fname))
+      Loader.for(loader_name).read(fname)
     end
 
-    def to_records(records)
+    def load_direct(records)
+      if records.respond_to?(:each)
+        records
+      else
+        raise MastermanError, 'undefined method `each` for mount_options[:direct]'
+      end
+    end
+
+    def to_instances(records)
       records.each_with_object({}) do |attributes, memo|
         record = model_class.new(attributes)
         memo[record[primary_key]] = record

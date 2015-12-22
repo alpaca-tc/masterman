@@ -1,7 +1,7 @@
 module Masterman
   module AttributeMethods
     def attributes
-      self.class.attribute_methods.each_with_object({}) do |attr, memo|
+      masterman.attribute_methods.each_with_object({}) do |attr, memo|
         value = public_send(attr)
         memo[attr.to_s] = value if value
       end

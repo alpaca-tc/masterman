@@ -25,7 +25,7 @@ module Masterman
 
   class_methods do
     def masterman
-      @masterman ||= Masterman::Base.new
+      @masterman ||= Masterman::Base.new(self)
     end
 
     def configure_masterman(&block)
