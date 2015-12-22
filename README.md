@@ -1,8 +1,7 @@
 # Masterman
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/masterman`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Masterman is static data loader for Ruby.
+It load data from direct or file, and defines accessor to read attributes.
 
 ## Installation
 
@@ -22,18 +21,70 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+class Prefecture
+  include Masterman
 
-## Development
+  masterman do 
+    self.mount_options = { file: '../prefecture.yml', loader: :yml }
+    has_many :shipping_costs
+    attribute_accessor :id, :name
+  end
+end
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+class ShippingCost
+  include Masterman
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+  masterman do 
+    # Define master data with loader
+    self.mount_options = { file: '../shipping_cost.yml', loader: :yml }
 
-## Contributing
+    # Define association like ActiveRecord
+    belongs_to :prefecture
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/masterman. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+    # Define attribute keys
+    attribute_accessor :id, :price, prefecture_id
+  end
+end
 
+ShippingCost.first.prefecture.is_a?(Prefecture)
+ShippingCost.first.attributes # => { 'id' => ..., 'price' => ..., 'prefecture_id' => ... }
+```
+
+### A few of loader
+
+```
+class Item
+  include Masterman
+
+  masterman do
+    # You can use either loader
+    # self.mount_options = { direct: [{ id: 1 }] }
+    # self.mount_options = { file: 'item.yml', loader: :yml }
+    # self.mount_options = { file: 'item.csv', loader: :csv }
+    # self.mount_options = { file: 'item.json', loader: :json }
+  end
+end
+```
+
+### ActiveRecord-like associations
+
+```
+class Item
+  include Masterman
+
+  masterman do
+    self.mount_options = { direct: [{ id: 1 }] }
+    belongs_to :user
+    has_one :main_attachment
+    has_many :variations
+    has_many :attachments, through: :variations
+
+    # Scope is evaluate by using `#instance_exec` on each records
+    has_many :odd_variations, -> { id % 2 == 1 }, source: :variations
+  end
+end
+```
 
 ## License
 
