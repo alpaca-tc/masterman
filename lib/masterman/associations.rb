@@ -33,7 +33,7 @@ module Masterman
       end
 
       reflection = Reflection.build(macro, name, scope, options, self)
-      Reflection.add_reflection self, name, reflection
+      Reflection.add_reflection(self, name, reflection)
     end
 
     def association_instance_get(name)

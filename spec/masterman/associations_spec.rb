@@ -57,7 +57,6 @@ RSpec.describe Masterman::Associations do
     end
   end
 
-
   # describe '.has_many with through' do
   #   before do
   #     class User

@@ -9,13 +9,16 @@ module Masterman
     extend ActiveSupport::Concern
 
     included do
-      cattr_accessor :generated_attribute_methods
+      class_attribute :generated_attribute_methods
     end
 
-    class GeneratedAttributeMethods < Module; end
+    class GeneratedAttributeMethods < Module
+      # include AttributeMethods
+      # include Collection
+    end
 
     def initialize(attributes = {})
-      super(attributes)
+      super unless method(__method__).super_method.arity.zero?
       initialize_generated_modules unless self.class.generated_attribute_methods
     end
 
@@ -28,11 +31,17 @@ module Masterman
     end
 
     def define_reflections
-      self.class.masterman._reflections.each do |name, _|
+      masterman.reflections.each do |name, _|
         self.class.generated_attribute_methods.module_eval do
-          define_method(name) { self.class.masterman.association(name, self).reader }
+          define_method(name) do
+            self.class.masterman.association(name, self).reader
+          end
         end
       end
+    end
+
+    def masterman
+      self.class.masterman
     end
   end
 end

@@ -1,6 +1,7 @@
 require 'active_support/concern'
 require 'active_support/inflector'
 require 'active_support/core_ext/module/attribute_accessors'
+require 'active_support/core_ext/class/attribute'
 
 require 'masterman/version'
 require 'masterman/core'
@@ -18,15 +19,13 @@ module Masterman
   extend ActiveSupport::Concern
 
   included do
-    include ActiveModel::Model
-    include AttributeMethods
-    include Collection
     include Core
+    include AttributeMethods
   end
 
   class_methods do
     def masterman
-      @masterman ||= Masterman::Base.new(self)
+      @masterman ||= Masterman::Base.new
     end
 
     def configure_masterman(&block)
