@@ -22,5 +22,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry', '~> 0.9.12'
   spec.add_development_dependency 'guard', '~> 2.13.0'
   spec.add_development_dependency 'guard-rspec', '~> 4.6.4'
-  spec.add_dependency 'activemodel', '~> 4.2.5'
 end
