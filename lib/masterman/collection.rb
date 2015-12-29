@@ -29,6 +29,10 @@ module Masterman
     end
 
     module ClassMethods
+      def all
+        to_a
+      end
+
       def find(id)
         masterman.all[id] || raise(RecordNotFound.new('missing record'))
       end
