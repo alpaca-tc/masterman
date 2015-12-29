@@ -5,10 +5,10 @@ RSpec.describe Masterman::Collection do
     Class.new do
       include Masterman
 
-      masterman.mount_options = {
-        file: File.expand_path('../../fixtures/masterdata.yml', __FILE__),
+      masterman.mount(
+        path: File.expand_path('../../fixtures/masterdata.yml', __FILE__),
         loader: :yaml
-      }
+      )
 
       masterman.attribute_accessor :id, :name
     end

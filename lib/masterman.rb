@@ -27,17 +27,13 @@ module Masterman
 
   class_methods do
     def masterman(&block)
-      if block_given?
-        _masterman.instance_exec(&block)
-      else
-        _masterman
-      end
-    end
-
-    private
-
-    def _masterman
       @masterman ||= Masterman::Base.new(self)
+
+      if block_given?
+        @masterman.instance_exec(&block)
+      else
+        @masterman
+      end
     end
   end
 end

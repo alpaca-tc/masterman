@@ -15,7 +15,7 @@ RSpec.describe Masterman::Mountable do
       end
     end
 
-    describe '#mount_options' do
+    describe '#mount' do
       describe 'with :direct options' do
         let(:mounted) do
           _records = records
@@ -23,7 +23,7 @@ RSpec.describe Masterman::Mountable do
           Class.new do
             include Masterman
 
-            masterman.mount_options = { direct: _records }
+            masterman.mount(direct: _records)
             masterman.attribute_accessor :id
           end
         end
@@ -31,26 +31,26 @@ RSpec.describe Masterman::Mountable do
         let(:records) { [{ id: 1 }] }
 
         it 'mount data directly' do
-          expect(mounted.masterman.all).to be_present
+          expect(mounted.masterman.all).to_not be_empty
         end
       end
 
-      describe 'with :file options' do
+      describe 'with :path options' do
         let(:mounted) do
           Class.new do
             include Masterman
 
-            masterman.mount_options = {
-              file: File.expand_path('../../fixtures/masterdata.yml', __FILE__),
+            masterman.mount(
+              path: File.expand_path('../../fixtures/masterdata.yml', __FILE__),
               loader: :yaml
-            }
+            )
 
             masterman.attribute_accessor :id, :name
           end
         end
 
-        it 'mount data from file' do
-          expect(mounted.masterman.all).to be_present
+        it 'mount data from path' do
+          expect(mounted.masterman.all).to_not be_empty
         end
       end
     end

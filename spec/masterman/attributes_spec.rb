@@ -6,7 +6,7 @@ RSpec.describe Masterman::Attributes do
       Class.new do
         include Masterman
         masterman.attribute_accessor :id, :name
-        masterman.mount_options = { direct: [{ id: 1, name: 'name' }] }
+        masterman.mount(direct: [{ id: 1, name: 'name' }])
       end
     end
 

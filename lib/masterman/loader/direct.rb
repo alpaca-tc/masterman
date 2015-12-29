@@ -1,12 +1,12 @@
-require 'yaml'
+require 'csv'
 
 module Masterman
   module Loader
-    class Yaml < Base
-      self.extensions = [:yml]
+    class Direct < Base
+      self.extensions = []
 
       def all
-        ::YAML.load_file(options[:path])
+        options[:direct]
       end
 
       Loader.register_loader(self)

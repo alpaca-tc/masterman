@@ -1,7 +1,7 @@
 # Masterman
 
 Masterman is static data loader for Ruby.
-It load data from direct or file, and defines accessor to read attributes.
+It loads data from direct or file, and defines accessor to read attributes.
 
 ## Installation
 
@@ -26,7 +26,7 @@ class Prefecture
   include Masterman
 
   masterman do 
-    self.mount_options = { file: '../prefecture.yml', loader: :yml }
+    mount path: '../prefecture.yml', loader: :yml
     has_many :shipping_costs
     attribute_accessor :id, :name
   end
@@ -37,7 +37,7 @@ class ShippingCost
 
   masterman do 
     # Define master data with loader
-    self.mount_options = { file: '../shipping_cost.yml', loader: :yml }
+    mount path: '../shipping_cost.yml', loader: :yml
 
     # Define association like ActiveRecord
     belongs_to :prefecture
@@ -59,10 +59,10 @@ class Item
 
   masterman do
     # You can use either loader
-    # self.mount_options = { direct: [{ id: 1 }] }
-    # self.mount_options = { file: 'item.yml', loader: :yml }
-    # self.mount_options = { file: 'item.csv', loader: :csv }
-    # self.mount_options = { file: 'item.json', loader: :json }
+    # mount direct: [{ id: 1 }]
+    # mount path: 'item.yml', loader: :yml
+    # mount path: 'item.csv', loader: :csv
+    # mount path: 'item.json', loader: :json
   end
 end
 ```
@@ -74,7 +74,7 @@ class Item
   include Masterman
 
   masterman do
-    self.mount_options = { direct: [{ id: 1 }] }
+    mount direct: [{ id: 1 }]
     belongs_to :user
     has_one :main_attachment
     has_many :variations
@@ -89,4 +89,3 @@ end
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

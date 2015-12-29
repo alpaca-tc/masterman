@@ -1,5 +1,3 @@
-require 'active_model'
-
 module Masterman
   class Base
     include Attributes

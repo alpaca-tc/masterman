@@ -1,17 +1,18 @@
 require 'spec_helper'
 
 RSpec.describe Masterman::Loader do
-  describe '.for' do
-    subject { described_class.for(name) }
+  describe '.build' do
+    subject { described_class.build(options) }
 
     shared_examples_for 'a loader' do
       describe 'implemented loader methods' do
-        it { is_expected.to respond_to(:read) }
+        it { is_expected.to respond_to(:find) }
+        it { is_expected.to respond_to(:all) }
       end
 
       describe 'load file' do
         it 'loads file' do
-          subject.read(path).each do |attributes|
+          subject.all.each do |attributes|
             expect(attributes).to be_key('id').and be_key('name')
           end
         end
@@ -19,25 +20,47 @@ RSpec.describe Masterman::Loader do
     end
 
     context 'given :json' do
-      let(:name) { :json }
-      let(:path) { File.expand_path('../../fixtures/masterdata.json', __FILE__) }
-      it { is_expected.to eq(described_class::Json) }
+      let(:options) do
+        { path: File.expand_path('../../fixtures/masterdata.json', __FILE__), loader: :json }
+      end
+
+      it { is_expected.to be_a(described_class::Json) }
 
       it_behaves_like 'a loader'
     end
 
     context 'given :yaml' do
-      let(:name) { :yaml }
-      let(:path) { File.expand_path('../../fixtures/masterdata.yml', __FILE__) }
-      it { is_expected.to eq(described_class::Yaml) }
+      let(:options) do
+        {
+          path: File.expand_path('../../fixtures/masterdata.yml', __FILE__),
+          loader: :yaml
+        }
+      end
+
+      it { is_expected.to be_a(described_class::Yaml) }
 
       it_behaves_like 'a loader'
     end
 
     context 'given :csv' do
-      let(:name) { :csv }
-      let(:path) { File.expand_path('../../fixtures/masterdata.csv', __FILE__) }
-      it { is_expected.to eq(described_class::Csv) }
+      let(:options) do
+        {
+          path: File.expand_path('../../fixtures/masterdata.csv', __FILE__),
+          loader: :csv
+        }
+      end
+
+      it { is_expected.to be_a(described_class::Csv) }
+
+      it_behaves_like 'a loader'
+    end
+
+    context 'given :direct' do
+      let(:options) do
+        { direct: [] }
+      end
+
+      it { is_expected.to be_a(described_class::Direct) }
 
       it_behaves_like 'a loader'
     end

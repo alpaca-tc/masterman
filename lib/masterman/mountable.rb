@@ -1,41 +1,23 @@
 module Masterman
   module Mountable
-    attr_accessor :primary_key, :mount_options
+    attr_writer :primary_key
+    attr_reader :loader
+
+    def mount(options = {})
+      @loader = Loader.build(options)
+    end
 
     def primary_key
       @primary_key || :id
     end
 
     def all
-      to_instances(load_records)
+      to_instances(loader.all)
     end
 
     private
 
-    def load_records
-      if !mount_options
-        raise MastermanError, 'not defined .mount with options. Please call .mount on this class'
-      elsif mount_options[:file]
-        load_file(mount_options[:file], mount_options[:loader])
-      elsif mount_options[:direct]
-        load_direct(mount_options[:direct])
-      else
-        nil
-      end
-    end
-
-    def load_file(fname, loader_name)
-      Loader.for(loader_name).read(fname)
-    end
-
-    def load_direct(records)
-      if records.respond_to?(:each)
-        records
-      else
-        raise MastermanError, 'undefined method `each` for mount_options[:direct]'
-      end
-    end
-
+    # [{ primary_key => instance, primary_key => instance, ... }]
     def to_instances(records)
       records.each_with_object({}) do |attributes, memo|
         record = model_class.new(attributes)
