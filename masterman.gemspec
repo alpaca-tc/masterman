@@ -8,13 +8,15 @@ Gem::Specification.new do |spec|
   spec.authors = ['alpaca-tc']
   spec.email = ['alpaca-tc@alpaca.tc']
 
-  spec.summary = %q{Masterman extends model. ActivRecord-like association}
-  spec.description = %q{Masterman extends model}
+  spec.summary = %q{Masterman is static data loader for Ruby.}
+  spec.description = %q{Masterman is static data loader for Ruby. It loads data from direct or file, and defines accessor to read attributes.}
   spec.homepage = 'https://github.com/alpaca-tc/masterman'
   spec.license = 'MIT'
-
-  spec.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.require_paths = ['lib']
+
+  spec.files = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
 
   spec.add_dependency 'activesupport'
   spec.add_development_dependency 'bundler', '~> 1.10'
