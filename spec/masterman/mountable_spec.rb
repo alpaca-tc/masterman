@@ -24,7 +24,7 @@ RSpec.describe Masterman::Mountable do
             include Masterman
 
             masterman.mount(direct: _records)
-            masterman.attribute_accessor :id
+            masterman.attr_reader :id
           end
         end
 
@@ -45,7 +45,7 @@ RSpec.describe Masterman::Mountable do
               loader: :yaml
             )
 
-            masterman.attribute_accessor :id, :name
+            masterman.attr_reader :id, :name
           end
         end
 

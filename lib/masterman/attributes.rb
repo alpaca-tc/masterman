@@ -5,12 +5,12 @@ module Masterman
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :attribute_methods
-      self.attribute_methods = []
+      class_attribute :attr_readers
+      self.attr_readers = []
     end
 
-    def attribute_accessor(*attrs)
-      self.attribute_methods += attrs
+    def attr_reader(*attrs)
+      self.attr_readers += attrs
     end
   end
 end

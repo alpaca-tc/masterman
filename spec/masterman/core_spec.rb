@@ -10,11 +10,11 @@ RSpec.describe Masterman::Core do
 
     def contained_generated_attribute_methods(klass)
       klass.ancestors.any? do |ancestor|
-        ancestor.is_a?(Masterman::Core::GeneratedAttributeMethods)
+        ancestor.is_a?(Masterman::Core::GeneratedAttributeReaders)
       end
     end
 
-    it 'includes GeneratedAttributeMethods to it' do
+    it 'includes GeneratedAttributeReaders to it' do
       expect(contained_generated_attribute_methods(model)).to be false
       model.new
       expect(contained_generated_attribute_methods(model)).to be true
@@ -24,7 +24,7 @@ RSpec.describe Masterman::Core do
       let(:model) do
         Class.new do
           include Masterman
-          attr_accessor :user_id
+          attr_reader :user_id
 
           masterman.belongs_to :user
         end

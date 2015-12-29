@@ -28,7 +28,7 @@ class Prefecture
   masterman do 
     mount path: '../prefecture.yml', loader: :yml
     has_many :shipping_costs
-    attribute_accessor :id, :name
+    attr_reader :id, :name
   end
 end
 
@@ -43,7 +43,7 @@ class ShippingCost
     belongs_to :prefecture
 
     # Define attribute keys
-    attribute_accessor :id, :price, prefecture_id
+    attr_reader :id, :price, prefecture_id
   end
 end
 

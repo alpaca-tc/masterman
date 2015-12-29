@@ -10,7 +10,7 @@ RSpec.describe Masterman::Collection do
         loader: :yaml
       )
 
-      masterman.attribute_accessor :id, :name
+      masterman.attr_reader :id, :name
     end
   end
 

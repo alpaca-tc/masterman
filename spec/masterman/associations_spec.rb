@@ -7,7 +7,7 @@ RSpec.describe Masterman::Associations do
 
       masterman do
         mount(direct: [{ id: 1, name: 'user' }])
-        attribute_accessor :id, :name
+        attr_reader :id, :name
         has_one :user_secret
         has_many :items
         has_many :variations, through: :items
@@ -21,7 +21,7 @@ RSpec.describe Masterman::Associations do
 
       masterman do
         mount(direct: [{ id: 1, name: 'item', user_id: 1 }])
-        attribute_accessor :id, :name, :user_id
+        attr_reader :id, :name, :user_id
         belongs_to :user
         has_many :variations
       end
@@ -32,7 +32,7 @@ RSpec.describe Masterman::Associations do
 
       masterman do
         mount(direct: [{ id: 1, name: 'Variation', item_id: 1 }])
-        attribute_accessor :id, :name, :item_id
+        attr_reader :id, :name, :item_id
         belongs_to :item
         has_one :user, through: :item
         has_many :attachments
@@ -44,7 +44,7 @@ RSpec.describe Masterman::Associations do
 
       masterman do
         mount(direct: [{ id: 1, name: 'Attachment', variation_id: 1 }])
-        attribute_accessor :id, :name, :variation_id
+        attr_reader :id, :name, :variation_id
         belongs_to :variation
       end
     end
@@ -54,7 +54,7 @@ RSpec.describe Masterman::Associations do
 
       masterman do
         mount(direct: [{ id: 1, name: 'user_secret', user_id: 1 }])
-        attribute_accessor :id, :name, :user_id
+        attr_reader :id, :name, :user_id
         belongs_to :user
       end
     end

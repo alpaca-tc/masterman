@@ -9,16 +9,13 @@ module Masterman
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :generated_attribute_methods
+      class_attribute :generated_attr_readers
     end
 
-    class GeneratedAttributeMethods < Module
-      # include AttributeMethods
-      # include Collection
-    end
+    class GeneratedAttributeReaders < Module; end
 
     def initialize(attributes = {})
-      initialize_generated_modules unless self.class.generated_attribute_methods
+      initialize_generated_modules unless self.class.generated_attr_readers
 
       attributes.each do |key, value|
         instance_variable_set(:"@#{key}", value)
@@ -30,15 +27,15 @@ module Masterman
     private
 
     def initialize_generated_modules
-      self.class.generated_attribute_methods = GeneratedAttributeMethods.new
-      self.class.include(generated_attribute_methods)
+      self.class.generated_attr_readers = GeneratedAttributeReaders.new
+      self.class.include(generated_attr_readers)
       define_attributes
       define_reflections
     end
 
     def define_reflections
       masterman.reflections.each do |name, _|
-        generated_attribute_methods.module_eval do
+        generated_attr_readers.module_eval do
           define_method(name) do
             self.class.masterman.association(name, self).reader
           end
@@ -47,10 +44,10 @@ module Masterman
     end
 
     def define_attributes
-      attribute_methods = masterman.attribute_methods
+      readers = masterman.attr_readers
 
-      generated_attribute_methods.module_eval do
-        attr_accessor *attribute_methods
+      generated_attr_readers.module_eval do
+        attr_reader *readers
       end
     end
 

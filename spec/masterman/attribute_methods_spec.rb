@@ -4,7 +4,7 @@ RSpec.describe Masterman::AttributeMethods do
   let(:klass) do
     Class.new do
       include Masterman
-      masterman.attribute_accessor :id
+      masterman.attr_reader :id
     end
   end
 
