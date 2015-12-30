@@ -19,17 +19,15 @@ module Masterman
       end
 
       def detect_loader(options)
-        if !options[:loader] && options[:path]
-          # Detect loader from path path if Missing loader options
-          extname = File.extname(options[:path])
-          options[:loader] = loaders.find { |loader| loader.extensions.include?(extname) }
-        end
-
         if options[:loader].is_a?(Class)
           # Given loader class as option
           options[:loader]
         elsif options[:direct]
           Loader::Direct
+        elsif !options[:loader] && options[:path]
+          # Detect loader from path path if Missing loader options
+          extname = File.extname(options[:path]).sub(/^\./, '').to_sym
+          loaders.find { |loader| loader.extensions.include?(extname) }
         else
           # From string or symbol
           const_get(options[:loader].to_s.classify)

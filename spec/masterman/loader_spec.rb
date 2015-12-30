@@ -17,6 +17,15 @@ RSpec.describe Masterman::Loader do
           end
         end
       end
+
+      describe 'without :loader option' do
+        it 'returns loader' do
+          original = described_class.build(options)
+          without_loader = described_class.build(options.except(:loader))
+          expect(original).to be_a(described_class::Base)
+          expect(original.class).to eq(without_loader.class)
+        end
+      end
     end
 
     context 'given :json' do
