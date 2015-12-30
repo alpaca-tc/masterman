@@ -22,9 +22,9 @@ module Masterman
         if options[:loader].is_a?(Class)
           # Given loader class as option
           options[:loader]
-        elsif options[:direct]
+        elsif options.key?(:direct)
           Loader::Direct
-        elsif !options[:loader] && options[:path]
+        elsif !options.key?(:loader) && options.key?(:path)
           # Detect loader from path path if Missing loader options
           extname = File.extname(options[:path]).sub(/^\./, '').to_sym
           loaders.find { |loader| loader.extensions.include?(extname) }
