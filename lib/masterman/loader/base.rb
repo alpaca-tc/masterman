@@ -20,7 +20,11 @@ module Masterman
       private
 
       def loader_options
-        @options.fetch(:loader_options, {})
+        default_loader_options.merge(@options.fetch(:loader_options, {}))
+      end
+
+      def default_loader_options
+        {}
       end
     end
   end

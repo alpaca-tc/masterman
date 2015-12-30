@@ -9,6 +9,12 @@ module Masterman
         CSV.read(options[:path], loader_options)
       end
 
+      private
+
+      def default_loader_options
+        { headers: true }
+      end
+
       Loader.register_loader(self)
     end
   end
