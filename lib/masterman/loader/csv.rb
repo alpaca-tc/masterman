@@ -6,7 +6,7 @@ module Masterman
       self.extensions = [:csv]
 
       def all
-        CSV.read(options[:path], headers: true)
+        CSV.read(options[:path], loader_options)
       end
 
       Loader.register_loader(self)

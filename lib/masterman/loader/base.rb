@@ -16,6 +16,12 @@ module Masterman
       def all(*)
         raise NotImplementedError, 'not implemented yet'
       end
+
+      private
+
+      def loader_options
+        @options.fetch(:loader_options, {})
+      end
     end
   end
 end
