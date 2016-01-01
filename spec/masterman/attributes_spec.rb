@@ -13,8 +13,8 @@ RSpec.describe Masterman::Attributes do
     end
 
     it 'defines reader' do
-      records = klass.masterman.all.values
-      expect(records.first.name).to eq('name')
+      record = klass.find(1)
+      expect(record.name).to eq('name')
     end
   end
 end

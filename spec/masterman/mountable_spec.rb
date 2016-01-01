@@ -31,7 +31,7 @@ RSpec.describe Masterman::Mountable do
         let(:records) { [{ id: 1 }] }
 
         it 'mount data directly' do
-          expect(mounted.masterman.all).to_not be_empty
+          expect(mounted.masterman.loader.all).to_not be_empty
         end
       end
 
@@ -50,7 +50,7 @@ RSpec.describe Masterman::Mountable do
         end
 
         it 'mount data from path' do
-          expect(mounted.masterman.all).to_not be_empty
+          expect(mounted.masterman.loader.all).to_not be_empty
         end
       end
     end
