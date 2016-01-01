@@ -1,5 +1,7 @@
 # Masterman
 
+**Unstable version**
+
 Masterman is static data loader for Ruby.
 It loads data from direct or file, and defines accessor to read attributes.
 
@@ -26,9 +28,9 @@ class Prefecture
   include Masterman
 
   masterman do 
-    mount path: '../prefecture.yml', loader: :yml
-    has_many :shipping_costs
     attr_reader :id, :name
+    mount path: '../prefecture.yml'
+    has_many :shipping_costs
   end
 end
 
@@ -36,14 +38,9 @@ class ShippingCost
   include Masterman
 
   masterman do 
-    # Define master data with loader
-    mount path: '../shipping_cost.yml', loader: :yml
-
-    # Define association like ActiveRecord
-    belongs_to :prefecture
-
-    # Define attribute keys
     attr_reader :id, :price, prefecture_id
+    mount path: '../shipping_cost.yml'
+    belongs_to :prefecture
   end
 end
 
@@ -80,11 +77,19 @@ class Item
     has_many :variations
     has_many :attachments, through: :variations
 
-    # Scope is evaluate by using `#instance_exec` on each records
+    # Filter records by scope which is evaluated by using `#instance_exec`.
     has_many :odd_variations, -> { id % 2 == 1 }, source: :variations
   end
 end
 ```
+
+## TODO
+
+- Support `has_and_belongs_to` association
+- Should I support lazy loading?
+- Support cache records.
+- Validate options for association
+- Try to install masterman to [pixivFACTORY](factory.pixiv.net)
 
 ## License
 
