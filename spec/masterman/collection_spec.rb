@@ -14,40 +14,28 @@ RSpec.describe Masterman::Collection do
     end
   end
 
-  describe '.find' do
-    subject { klass.find(id) }
-
-    context 'if record is exist' do
-      let(:id) { 1 }
-
-      it 'finds by id' do
-        is_expected.to be_a(klass.masterman.model_class)
-      end
-    end
-
-    context 'if record is not exist' do
-      let(:id) { 10 }
-
-      it 'raise not found error' do
-        expect { subject }.to raise_error(Masterman::RecordNotFound)
-      end
-    end
+  describe '.relation' do
+    subject { klass.relation }
+    it { is_expected.to be_a(Masterman::Relation) }
   end
 
-  describe '.find_by' do
-    subject { klass.find_by(id: id) }
-
-    context 'if record is exist' do
-      let(:id) { 1 }
-
-      it 'finds by id' do
-        is_expected.to be_a(klass.masterman.model_class)
+  describe 'methods' do
+    it 'should not raise error' do
+      %i(all first first! last last! exists? any? many? ids).each do |method|
+        expect { klass.public_send(method) }.to_not raise_error
       end
-    end
 
-    context 'if record is not exist' do
-      let(:id) { 10 }
-      it { is_expected.to be_nil }
+      %i(find take take!).each do |method|
+        expect { klass.public_send(method, 1) }.to_not raise_error
+      end
+
+      %i(pluck).each do |method|
+        expect { klass.public_send(method, :id) }.to_not raise_error
+      end
+
+      %i(find_by find_by!).each do |method|
+        expect { klass.public_send(method, id: 1) }.to_not raise_error
+      end
     end
   end
 end

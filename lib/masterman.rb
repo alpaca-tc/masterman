@@ -1,5 +1,6 @@
 require 'active_support/concern'
 require 'active_support/inflector'
+require 'active_support/core_ext/module/concerning'
 require 'active_support/core_ext/module/attribute_accessors'
 require 'active_support/core_ext/class/attribute'
 require 'active_support/core_ext/array/wrap'
@@ -9,7 +10,9 @@ require 'masterman/core'
 require 'masterman/association'
 require 'masterman/attribute_methods'
 require 'masterman/associations'
+require 'masterman/collection'
 require 'masterman/reflection'
+require 'masterman/relation'
 require 'masterman/loader'
 require 'masterman/base'
 
@@ -21,8 +24,8 @@ module Masterman
 
   included do
     include Core
-    include Collection
     include AttributeMethods
+    extend Collection
   end
 
   class_methods do
