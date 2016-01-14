@@ -5,7 +5,9 @@ module Masterman
     class Json < Base
       self.extensions = [:json]
 
-      def all
+      private
+
+      def find_all
         ::JSON.parse(File.read(options[:path]))
       end
 

@@ -5,11 +5,11 @@ module Masterman
     class Csv < Base
       self.extensions = [:csv]
 
-      def all
+      private
+
+      def find_all
         CSV.read(options[:path], loader_options)
       end
-
-      private
 
       def default_loader_options
         { headers: true }

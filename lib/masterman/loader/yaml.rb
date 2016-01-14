@@ -5,7 +5,9 @@ module Masterman
     class Yaml < Base
       self.extensions = [:yml]
 
-      def all
+      private
+
+      def find_all
         ::YAML.load_file(options[:path])
       end
 

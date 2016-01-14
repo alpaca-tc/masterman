@@ -13,11 +13,19 @@ module Masterman
         raise NotImplementedError, 'not implemented yet'
       end
 
-      def all(*)
-        raise NotImplementedError, 'not implemented yet'
+      def all
+        if options[:cache]
+          @all ||= find_all
+        else
+          find_all
+        end
       end
 
       private
+
+      def find_all
+        raise NotImplementedError, 'not implemented yet'
+      end
 
       def loader_options
         default_loader_options.merge(@options.fetch(:loader_options, {}))

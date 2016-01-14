@@ -5,7 +5,9 @@ module Masterman
     class Direct < Base
       self.extensions = []
 
-      def all
+      private
+
+      def find_all
         options[:direct]
       end
 

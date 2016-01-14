@@ -8,6 +8,16 @@ RSpec.describe Masterman::Loader do
       describe 'implemented loader methods' do
         it { is_expected.to respond_to(:find) }
         it { is_expected.to respond_to(:all) }
+
+        describe 'cacheable' do
+          let(:options) { super().merge(cache: true) }
+
+          it 'returns cached static data' do
+            expect(subject).to receive(:find_all).once.and_return([])
+            subject.all
+            subject.all
+          end
+        end
       end
 
       describe 'load file' do
