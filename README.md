@@ -48,7 +48,23 @@ ShippingCost.first.prefecture.is_a?(Prefecture)
 ShippingCost.first.attributes # => { 'id' => ..., 'price' => ..., 'prefecture_id' => ... }
 ```
 
-### A few of loader
+### Directly mount single data to class
+
+```
+class Administrator
+  include Masterman
+
+  masterman do 
+    # Can not have association
+    cattr_reader :email, :name
+    class_mount path: '../prefecture.yml'
+  end
+end
+
+Prefecture.email.present? # => true
+```
+
+### Select filetype of static data 
 
 ```
 class Item
