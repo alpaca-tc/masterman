@@ -99,6 +99,21 @@ class Item
 end
 ```
 
+### Enable cache
+
+When masterman loader called `.find` or `.all`, loader is not cached.
+If you want to cache static data, call `.mount` with `cache: true`
+
+```
+class Item
+  include Masterman
+
+  masterman do
+    mount path: 'item.yml', cache: true
+  end
+end
+```
+
 ## TODO
 
 - Support `has_and_belongs_to` association
