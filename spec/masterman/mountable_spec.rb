@@ -15,6 +15,29 @@ RSpec.describe Masterman::Mountable do
       end
     end
 
+    describe '#class_mount' do
+      describe 'with :path options' do
+        let(:mounted) do
+          Class.new do
+            include Masterman
+
+            masterman.class_mount(
+              path: File.expand_path('../../fixtures/class_masterdata.yml', __FILE__),
+              loader: :yaml
+            )
+
+            masterman.cattr_reader :name, :url
+
+            masterman.mount_class_attributes!
+          end
+        end
+
+        it 'mount data from path' do
+          expect(mounted.masterman.class_loader.all).to_not be_empty
+        end
+      end
+    end
+
     describe '#mount' do
       describe 'with :direct options' do
         let(:mounted) do

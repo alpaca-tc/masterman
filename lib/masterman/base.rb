@@ -4,6 +4,7 @@ module Masterman
     include Associations
     include Reflection
     include Mountable
+    include ClassAccessor
 
     attr_reader :model_class
 

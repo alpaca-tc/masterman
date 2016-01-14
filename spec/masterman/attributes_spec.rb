@@ -12,9 +12,26 @@ RSpec.describe Masterman::Attributes do
       end
     end
 
-    it 'defines reader' do
+    it 'defines attribute reader' do
       record = klass.find(1)
       expect(record.name).to eq('name')
+    end
+  end
+
+  describe '.cattr_reader' do
+    let(:klass) do
+      Class.new do
+        include Masterman
+        masterman do
+          class_mount(direct: { name: 'name' })
+          cattr_reader :name
+          mount_class_attributes!
+        end
+      end
+    end
+
+    it 'defines class attribute reader' do
+      expect(klass.name).to eq('name')
     end
   end
 end

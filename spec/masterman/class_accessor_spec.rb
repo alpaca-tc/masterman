@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Masterman::Core do
+RSpec.describe Masterman::InstanceAccessor do
   context 'when initialize model' do
     let(:model) do
       Class.new do
@@ -10,7 +10,7 @@ RSpec.describe Masterman::Core do
 
     def contained_generated_attribute_methods(klass)
       klass.ancestors.any? do |ancestor|
-        ancestor.is_a?(Masterman::Core::GeneratedAttributeReaders)
+        ancestor.is_a?(Masterman::InstanceAccessor::GeneratedAttributeReaders)
       end
     end
 

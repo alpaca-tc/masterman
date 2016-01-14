@@ -6,9 +6,10 @@ require 'active_support/core_ext/class/attribute'
 require 'active_support/core_ext/array/wrap'
 
 require 'masterman/version'
-require 'masterman/core'
+require 'masterman/instance_accessor'
+require 'masterman/class_accessor'
 require 'masterman/association'
-require 'masterman/attribute_methods'
+require 'masterman/attributes'
 require 'masterman/associations'
 require 'masterman/collection'
 require 'masterman/reflection'
@@ -23,9 +24,12 @@ module Masterman
   extend ActiveSupport::Concern
 
   included do
-    include Core
-    include AttributeMethods
+    include InstanceAccessor
     extend Collection
+
+    def masterman
+      self.class.masterman
+    end
   end
 
   class_methods do
